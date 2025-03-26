@@ -1,8 +1,4 @@
 #include <Arduino.h>
-#define BOUTONSW 18 //BROCHE A DEFINIR
-#define LEDALLUMER 16 //BROCHE A DEFINIR
-#define LEDALLUMER2 17
-
 #include <Wire.h>
 
 #define adresseBaseDesBacs 0x20
