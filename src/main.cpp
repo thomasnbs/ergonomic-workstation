@@ -3,7 +3,7 @@
 #include "BluetoothSerial.h"
 
 #define VITESSE_BLUETOOTH 9600
-BluetoothSerial posteDeTravail;
+BluetoothSerial ergonomicWorkstation;
 
 #define adresseBaseDesBacs 0x20
 #define numeroDuBac_1 0
@@ -17,7 +17,7 @@ BluetoothSerial posteDeTravail;
 
 void setup() {
  Wire.begin();
- posteDeTravail.begin("Poste de travail");
+ ergonomicWorkstation.begin("EWS_4.0"); //adresse MAC = 08:3A:F2:AA:74:06
  Serial.begin(VITESSE_BLUETOOTH);
 
 
@@ -25,13 +25,13 @@ void setup() {
 
 void loop() {
   Wire.beginTransmission(adresseBaseDesBacs + numeroDuBac_1); // Début de la transmission à l'adresse 0x20
-  Wire.write(0b11111100);                             // 
+  Wire.write(0b11111101);                             // 
   Wire.endTransmission();
   delay(ATTENDRE_1_SECONDE);
   Wire.beginTransmission(adresseBaseDesBacs + numeroDuBac_1); // Début de la transmission à l'adresse 0x20
-  Wire.write(0b11111111);                             // 
+  Wire.write(0b11111110);                             // 
   Wire.endTransmission();
   delay(ATTENDRE_1_SECONDE);
-  posteDeTravail.println(adresseBaseDesBacs);
+  ergonomicWorkstation.println(adresseBaseDesBacs,BIN);
 }
 
