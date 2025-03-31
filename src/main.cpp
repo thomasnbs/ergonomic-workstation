@@ -7,10 +7,11 @@ BluetoothSerial ergonomicWorkstation;
 
 #define adresseBaseDesBacs 0x20
 #define numeroDuBac_1 0
-#define numeroDuBac_2 1
-#define numeroDuBac_3 
+#define numeroDuBac_8 7 // adresse du dernièr bac
 #define capteurBac_1 2
 #define etatCapteurBac_1
+#define NOMBRE_D_OCTETS 1
+#define MASQUE_DE_PRESENCE_DE_MAIN 0x04 // 0b00000100
 
 #define ATTENDRE_1_SECONDE 1000
 
@@ -24,6 +25,7 @@ void setup() {
 }
 
 void loop() {
+ 
   Wire.beginTransmission(adresseBaseDesBacs + numeroDuBac_1); // Début de la transmission à l'adresse 0x20
   Wire.write(0b11111101);                             // 
   Wire.endTransmission();
@@ -32,6 +34,20 @@ void loop() {
   Wire.write(0b11111110);                             // 
   Wire.endTransmission();
   delay(ATTENDRE_1_SECONDE);
-  ergonomicWorkstation.println(adresseBaseDesBacs,BIN);
+  
+/*for*/
+
+  Wire.requestFrom(adresseBaseDesBacs + numeroDuBac_1, NOMBRE_D_OCTETS); // Demande de 1 octet à l'adresse 0x20
+  if(Wire.available()>0) 
+  {
+    uint8_t octetDuBac = Wire.read();
+    bool presenceMain = (octetDuBac & MASQUE_DE_PRESENCE_DE_MAIN) ; // Vérifie si le bit de présence de la main est à 0
+    /*sockage dans tableau ou création d'un octet de présence*/
+   
+  }
+
+  /*end for*/
+  ergonomicWorkstation.println(presenceMain); // Affiche la valeur binaire du registre d'état du bac 1
+
 }
 
