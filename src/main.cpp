@@ -48,11 +48,14 @@
 #define ROUGE 0
 #define VERTE 0
 
+#define CAPTEUR_DE_PRESENCE 0b11111011
+
 #define NOMBRE_D_OCTETS 1
 #define MASQUE_DE_PRESENCE_DE_MAIN 0x04 // 0b00000100
 
 #define AUCUN false
 #define RECEPTION true
+
 
 String entete ="$$";
 String finDeTrame = "%%";
@@ -133,9 +136,8 @@ void loop()
     delay(1000);
     commanderLedsBac(bacSelectionne,ETEINDRE_LEDS);
     evenement = AUCUN;
-
-
   }
+  
   
   //Wire.beginTransmission(ADRESSE_BASE_BACS+bacSelectionne-1); // Début de la transmission à l'adresse 0x20
   //Wire.write(ALLUMER_LED_VERTE);        
