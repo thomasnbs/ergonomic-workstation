@@ -24,99 +24,67 @@
  */
 
 
-#include <Arduino.h>
-#include <Wire.h>
-#include <String.h>
-#include "BluetoothSerial.h"
+ #include <Arduino.h>
+ #include <Wire.h>
+ #include <String.h>
+ #include "BluetoothSerial.h"
+ #include "transmettre.h"
+ #include "bacs.h"
 
-#define VITESSE_BLUETOOTH 9600
-#define VITESSE_SERIE 9600
+ //#define numeroDuBac_8 7 // adresse du dernièr bac
 
-
-#define NOMBRE_DE_BACS  8
-
-#define ADRESSE_BASE_BACS   0x20
-
-#define NUMERODUBAC_1 0
-#define NUMERODUBAC_2 1
-#define NUMERODUBAC_3 2
-//#define numeroDuBac_8 7 // adresse du dernièr bac
-
-#define ALLUMER_LED_VERTE  0b11111101
-#define ALLUMER_LED_ROUGE  0b11111110
-#define ETEINDRE_LEDS      0b11111111
-#define ROUGE 0
-#define VERTE 0
+ #define NOM_DE_LA_STATION "EWS_4.0"
 
 #define CAPTEUR_DE_PRESENCE 0b11111011
-
 #define NOMBRE_D_OCTETS 1
 #define MASQUE_DE_PRESENCE_DE_MAIN 0x04 // 0b00000100
 
-#define AUCUN false
-#define RECEPTION true
 
-
-String entete ="$$";
-String finDeTrame = "%%";
-String acquittement = "A";
-String trameRecue = "";
-bool trameValide = false;
-uint8_t bacSelectionne = 0;
-bool evenement = AUCUN;
-
-BluetoothSerial ergonomicWorkstation;   // instanciation de l'objet "ergonomicWorkstation" dans la classe BluetoothSerial
-
-bool presenceMain = false;
-//bool presenceBacs [3] = {ADRESSEBASEDUBAC_1, ADRESSEBASEDUBAC_2, ADRESSEBASEDUBAC_3};
-
-void commanderLedsBac(uint8_t numeroDuBac, byte etat){
-  numeroDuBac--;
-  Wire.beginTransmission(ADRESSE_BASE_BACS+numeroDuBac); // Début de la transmission à l'adresse 0x20
-  Wire.write(etat);        
-  Wire.endTransmission();
-}
 
 void setup()
 {
   Serial.begin(VITESSE_SERIE);
   Wire.begin();         //init le bus I2c
+  
+intialiserBluetooth(NOM_DE_LA_STATION);
+while(!bluetoothConnecte()){
+
   for(uint8_t i=0;i<NOMBRE_DE_BACS;i++){
     Wire.beginTransmission(ADRESSE_BASE_BACS+i); // Début de la transmission à l'adresse 0x20
     Wire.write(ALLUMER_LED_VERTE);        
     Wire.endTransmission();
   }
-   // allumer les leds : en vert puis vert pour initialisation
-
-  ergonomicWorkstation.begin("EWS_4.0");    //initiliatilser le bluetooth
+ 
 delay(1000);
 
 for(uint8_t i=0;i<NOMBRE_DE_BACS;i++){
   Wire.beginTransmission(ADRESSE_BASE_BACS+i); // Début de la transmission à l'adresse 0x20
   Wire.write(ALLUMER_LED_ROUGE);        
   Wire.endTransmission();
+  }
+delay(1000);
 }
 
-delay(1000);
 for(uint8_t i=0;i<NOMBRE_DE_BACS;i++){
   Wire.beginTransmission(ADRESSE_BASE_BACS+i); // Début de la transmission à l'adresse 0x20
   Wire.write(ETEINDRE_LEDS);        
   Wire.endTransmission();
+ } 
 }
 
-}
+///////////////////////////////////////////////////////////////////////
 void loop() 
 {
 
-  if(ergonomicWorkstation.available()>0){
+  /*if(BLUETOOTH_SERIAL.available()>0){
        
-    trameRecue = ergonomicWorkstation.readString();
+    trameRecue = BLUETOOTH_SERIAL.readString();
     if(trameRecue.startsWith(entete)){  //&&trameRecue.endsWith(finDeTrame)
       trameValide=true;
     }
     if(trameValide){
       String trameAenvoyer = entete + acquittement + finDeTrame;
-      ergonomicWorkstation.print(trameAenvoyer);
+      BLUETOOTH_SERIAL.print(trameAenvoyer);
       trameValide=false;
       //Serial.println(trameRecue.length());
       //Serial.println(finDeTrame.length());
@@ -128,26 +96,18 @@ void loop()
       Serial.println(bacSelectionne);
     
   }
-    ergonomicWorkstation.flush();
-  }
-
-  if(evenement == RECEPTION){
-    commanderLedsBac(bacSelectionne,ALLUMER_LED_VERTE);
-    delay(1000);
-    commanderLedsBac(bacSelectionne,ETEINDRE_LEDS);
-    evenement = AUCUN;
-  }
-  
-  
-  //Wire.beginTransmission(ADRESSE_BASE_BACS+bacSelectionne-1); // Début de la transmission à l'adresse 0x20
-  //Wire.write(ALLUMER_LED_VERTE);        
-  //Wire.endTransmission();
+    BLUETOOTH_SERIAL.flush();
+  }*/
+}
+  /*Wire.beginTransmission(ADRESSE_BASE_BACS+bacSelectionne-1); // Début de la transmission à l'adresse 0x20
+  Wire.write(ALLUMER_LED_VERTE);        
+  Wire.endTransmission();
   
 
 
-// 
 
-/*
+
+
   Wire.requestFrom(ADRESSEBASEDUBAC_1 + NUMERODUBAC_1, NOMBRE_D_OCTETS); // Demande de 1 octet à l'adresse 0x20
   Wire.beginTransmission(ADRESSEBASEDUBAC_1 + NUMERODUBAC_1); // Début de la transmission à l'adresse 0x20
   if(Wire.available()>0) 
@@ -159,7 +119,7 @@ void loop()
     Wire.endTransmission(); 
 
   } 
-*/ 
+ 
   //for (int i = 0; i < 3 ; i ++)
   //ergonomicWorkstation.println(presenceBacs);
-}
+  */
