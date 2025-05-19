@@ -2,7 +2,6 @@
 #include "bacs.h"
 #include <Wire.h>
 
-
 void commanderLedsbac(uint8_t numeroDuBac, byte etat)
 {
     numeroDuBac --;
@@ -11,7 +10,10 @@ void commanderLedsbac(uint8_t numeroDuBac, byte etat)
     Wire.endTransmission();
 }
 
-void presenceMain()
+void presenceMain(uint8_t octetDuBac, byte capteurValeur)
 {
-
+    byte valeur = octetDuBac & CAPTEUR_DE_PRESENCE;
+    Wire.beginTransmission(octetDuBac + CAPTEUR_DE_PRESENCE);
+    Wire.write(capteurValeur);
+    Wire.endTransmission();
 }

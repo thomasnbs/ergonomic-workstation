@@ -3,6 +3,10 @@
 #include "BluetoothSerial.h"
 
 BluetoothSerial moduleBluetooth;
+bool trameValide = false;
+bool evenement = AUCUN; 
+String entete = "$";
+String finDeTrame = "%";
 
 void intialiserBluetooth(String nomDuModule, uint16_t vitesse)
 {
@@ -10,7 +14,8 @@ void intialiserBluetooth(String nomDuModule, uint16_t vitesse)
   moduleBluetooth.begin(vitesse);
 }
 
-bool bluetoothConnecte(void){
+bool bluetoothConnecte(void)
+{
 
    return moduleBluetooth.hasClient();
 }
@@ -25,13 +30,34 @@ String recevoirTrame()
 return trameRecue;
 }
 
-
-
-
-void envoyerTrame(String trameAenvoyer)
+String fabriquerTrame(String typeDeTrame)
 {
-    
-   moduleBluetooth.print(trameAenvoyer);
-   
+  String trameFabriquee = "";
+  trameFabriquee = entete + typeDeTrame + finDeTrame;
+  return trameFabriquee;
 }
 
+String envoyerTrame(String trameAenvoyer)
+{
+  String trameEnvoyer = "";
+  trameEnvoyer = entete + trameAenvoyer + finDeTrame;
+  return trameEnvoyer;
+  moduleBluetooth.print(trameEnvoyer);
+  Serial.print(trameEnvoyer);
+}
+
+String lireTrame(String lectureDeTrame)
+{
+  Serial.print(lectureDeTrame);
+  return lectureDeTrame;
+}
+
+
+String recevoirTrame(String trameRecue)
+{
+  trameRecue = "";
+  if(trameRecue.startsWith(entete)&&trameRecue.endsWith(finDeTrame))
+  {
+    trameValide = true;
+  }
+}

@@ -8,13 +8,18 @@
 #define AUCUN false
 #define RECEPTION true
 
-#define ENTETE  $$
-#define FIN_DE_TRAME %%
-#define ACQUITTEMENT A
-#define TRAME_RECUE ""
+
 
 
 void intialiserBluetooth(String nomDuModule, uint16_t vitesse = VITESSE_BLUETOOTH);
 bool bluetoothConnecte(void);
+//fabriquer une trame
+String fabriquerTrame(String typeDeTrame);
+// trame à envoyer
+String envoyerTrame(String trameAenvoyer);
+//lire la trame
+String lireTrame(String lireLaTrame);
+// trame à recevoir
+String recevoirTrame(String trameRecue);
 
 #endif  //TRANSMETTRE_H
