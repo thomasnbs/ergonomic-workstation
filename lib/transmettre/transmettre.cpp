@@ -48,6 +48,10 @@ String envoyerTrame(String trameAenvoyer)
 
 String fabriquerTrame(bool boutonValider)
 {
+  if(boutonValider)
+  {
+    return String(valider);
+  }
   return String(boutonValider); // Convertit booléen en "0" ou "1"
 }
 

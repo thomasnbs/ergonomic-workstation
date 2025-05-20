@@ -68,7 +68,7 @@ void loop()
 
     if (etatActuel == APPUYER && etatPrecedentEtatBouton == RELACHE)
     {
-        String trame = fabriquerTrame(true);
+        String trame = envoyerTrame(fabriquerTrame(true));
         envoyerParBluetooth(trame);
         Serial.println("Trame envoyée : " + trame);
     }
