@@ -14,12 +14,13 @@
 void intialiserBluetooth(String nomDuModule, uint16_t vitesse = VITESSE_BLUETOOTH);
 bool bluetoothConnecte(void);
 //fabriquer une trame
-String fabriquerTrame(String typeDeTrame);
+String fabriquerTrame(bool BoutonValider);
 // trame à envoyer
 String envoyerTrame(String trameAenvoyer);
 //lire la trame
-String lireTrame(String lireLaTrame);
+String lireTrame();
 // trame à recevoir
-String recevoirTrame(String trameRecue);
+String recevoirTrame();
+
 
 #endif  //TRANSMETTRE_H

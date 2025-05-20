@@ -1,6 +1,7 @@
 #ifndef BACS_H
 #define BACS_H
 
+
 #define NOMBRE_DE_BACS 8
 #define ADRESSE_BASE_BACS 0x20
 
@@ -14,8 +15,17 @@
 #define NOMBRE_D_OCTETS 1
 #define MASQUE_DE_PRESENCE_DE_MAIN 0x04 // 0b00000100
 
+#define BOUTON_VALIDER 27
+#define APPUYER true
+#define RELACHE false
+
+
 
 void commanderLedsbac(uint8_t numeroDuBac, byte etat);
 void presenceMain(void);
+void boutonValider(byte etatBouton);
+//void bacSelectionne(uint8_t numroDuBac);
+
+
 
 #endif //BACS

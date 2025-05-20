@@ -7,6 +7,8 @@ bool trameValide = false;
 bool evenement = AUCUN; 
 String entete = "$";
 String finDeTrame = "%";
+String acquittement = "A";
+String valider = "V";
 
 void intialiserBluetooth(String nomDuModule, uint16_t vitesse)
 {
@@ -30,11 +32,10 @@ String recevoirTrame()
 return trameRecue;
 }
 
-String fabriquerTrame(String typeDeTrame)
+String fabriquerTrame(bool BoutonValider)
 {
-  String trameFabriquee = "";
-  trameFabriquee = entete + typeDeTrame + finDeTrame;
-  return trameFabriquee;
+  String trame = (String)BoutonValider;
+  return trame;
 }
 
 String envoyerTrame(String trameAenvoyer)
@@ -42,14 +43,15 @@ String envoyerTrame(String trameAenvoyer)
   String trameEnvoyer = "";
   trameEnvoyer = entete + trameAenvoyer + finDeTrame;
   return trameEnvoyer;
-  moduleBluetooth.print(trameEnvoyer);
-  Serial.print(trameEnvoyer);
 }
 
-String lireTrame(String lectureDeTrame)
+String lireTrame()
 {
-  Serial.print(lectureDeTrame);
-  return lectureDeTrame;
+  if (moduleBluetooth.available()) // récupere les donnees du BT 
+  {
+    Serial.write(moduleBluetooth.read()); 
+  } 
+  return lireTrame();
 }
 
 

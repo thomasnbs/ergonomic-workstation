@@ -10,10 +10,30 @@ void commanderLedsbac(uint8_t numeroDuBac, byte etat)
     Wire.endTransmission();
 }
 
-void presenceMain(uint8_t octetDuBac, byte capteurValeur)
+bool etatBoutonValider()
+{
+    if(digitalRead(BOUTON_VALIDER) == APPUYER)
+    {
+        return APPUYER;
+    }
+    else 
+    {
+        return RELACHE;
+    }
+}
+/*void bacSelectionne(uint8_t numeroDuBac)
+{
+    Wire.beginTransmission(ADRESSE_BASE_BACS + numeroDuBac);
+    Wire.write(ALLUMER_LED_VERTE);
+    Wire.endTransmission();
+}
+*/
+
+/*void presenceMain(uint8_t octetDuBac, byte capteurValeur)
 {
     byte valeur = octetDuBac & CAPTEUR_DE_PRESENCE;
     Wire.beginTransmission(octetDuBac + CAPTEUR_DE_PRESENCE);
     Wire.write(capteurValeur);
     Wire.endTransmission();
 }
+*/
