@@ -21,6 +21,8 @@ String envoyerTrame(String trameAenvoyer);
 String lireTrame();
 // trame à recevoir
 String recevoirTrame();
+void envoyerParBluetooth(String message);
+
 
 
 #endif  //TRANSMETTRE_H

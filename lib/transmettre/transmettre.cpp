@@ -4,62 +4,53 @@
 
 BluetoothSerial moduleBluetooth;
 bool trameValide = false;
-bool evenement = AUCUN; 
+
 String entete = "$";
 String finDeTrame = "%";
-String acquittement = "A";
-String valider = "V";
 
 void intialiserBluetooth(String nomDuModule, uint16_t vitesse)
 {
-  moduleBluetooth.begin(nomDuModule);
-  moduleBluetooth.begin(vitesse);
+  moduleBluetooth.begin(nomDuModule);   // Nom du module visible en Bluetooth
+  Serial.println("Bluetooth initialisé");
 }
 
 bool bluetoothConnecte(void)
 {
-
-   return moduleBluetooth.hasClient();
+  return moduleBluetooth.hasClient();
 }
 
 String recevoirTrame()
 {
- String trameRecue = "";
- //while(!trameRecue.startsWith(ENTETE) && !trameRecue.endsWith(FIN_DE_TRAME)){
-   if(moduleBluetooth.available()>0){
-     trameRecue = moduleBluetooth.readString();
-     }
-return trameRecue;
+  String trameRecue = "";
+
+  if (moduleBluetooth.available() > 0)
+  {
+    trameRecue = moduleBluetooth.readStringUntil('\n');
+    trameRecue.trim();
+
+    if (trameRecue.startsWith(entete) && trameRecue.endsWith(finDeTrame))
+    {
+      trameValide = true;
+      trameRecue = trameRecue.substring(entete.length(), trameRecue.length() - finDeTrame.length());
+    }
+  }
+
+  return trameRecue;
+}
+
+
+String envoyerTrame(String trameAenvoyer)
+{
+  return entete + trameAenvoyer + finDeTrame;
 }
 
 String fabriquerTrame(bool BoutonValider)
 {
-  String trame = (String)BoutonValider;
-  return trame;
+  return String(BoutonValider); // Convertit booléen en "0" ou "1"
 }
 
-String envoyerTrame(String trameAenvoyer)
+void envoyerParBluetooth(String message)
 {
-  String trameEnvoyer = "";
-  trameEnvoyer = entete + trameAenvoyer + finDeTrame;
-  return trameEnvoyer;
+  moduleBluetooth.print(message);
 }
 
-String lireTrame()
-{
-  if (moduleBluetooth.available()) // récupere les donnees du BT 
-  {
-    Serial.write(moduleBluetooth.read()); 
-  } 
-  return lireTrame();
-}
-
-
-String recevoirTrame(String trameRecue)
-{
-  trameRecue = "";
-  if(trameRecue.startsWith(entete)&&trameRecue.endsWith(finDeTrame))
-  {
-    trameValide = true;
-  }
-}
