@@ -42,6 +42,9 @@ void setup()
 }
 
 
+// Déclaration de la variable pour stocker l'état précédent du bouton
+bool etatPrecedentEtatBouton = RELACHE;
+
 void loop()
 {
   String trame = recevoirTrame();
@@ -58,6 +61,22 @@ void loop()
   }
 
   delay(100); // Petite pause pour éviter les lectures trop rapides
+
+  // Déclaration en dehors ou en haut de la fonction loop()
+
+    bool etatActuel = etatBoutonValider();
+
+    if (etatActuel == APPUYER && etatPrecedentEtatBouton == RELACHE)
+    {
+        String trame = fabriquerTrame(true);
+        envoyerParBluetooth(trame);
+        Serial.println("Trame envoyée : " + trame);
+    }
+
+    etatPrecedentEtatBouton = etatActuel;  //  fonctionne maintenant
+    delay(50);
 }
+
+
 
 

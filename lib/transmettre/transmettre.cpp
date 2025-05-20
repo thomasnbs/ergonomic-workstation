@@ -7,6 +7,8 @@ bool trameValide = false;
 
 String entete = "$";
 String finDeTrame = "%";
+String valider = "V";
+String acquittement = "A";
 
 void intialiserBluetooth(String nomDuModule, uint16_t vitesse)
 {
@@ -44,9 +46,9 @@ String envoyerTrame(String trameAenvoyer)
   return entete + trameAenvoyer + finDeTrame;
 }
 
-String fabriquerTrame(bool BoutonValider)
+String fabriquerTrame(bool boutonValider)
 {
-  return String(BoutonValider); // Convertit booléen en "0" ou "1"
+  return String(boutonValider); // Convertit booléen en "0" ou "1"
 }
 
 void envoyerParBluetooth(String message)

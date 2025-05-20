@@ -9,20 +9,12 @@
 #define RECEPTION true
 
 
-
-
-void intialiserBluetooth(String nomDuModule, uint16_t vitesse = VITESSE_BLUETOOTH);
+void intialiserBluetooth(String nomDuModule, uint16_t vitesse = 9600);
 bool bluetoothConnecte(void);
-//fabriquer une trame
-String fabriquerTrame(bool BoutonValider);
-// trame à envoyer
-String envoyerTrame(String trameAenvoyer);
-//lire la trame
-String lireTrame();
-// trame à recevoir
 String recevoirTrame();
+String fabriquerTrame(bool boutonValider);
+String envoyerTrame(String trameAenvoyer);
 void envoyerParBluetooth(String message);
-
 
 
 #endif  //TRANSMETTRE_H

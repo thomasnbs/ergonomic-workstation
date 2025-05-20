@@ -2,6 +2,7 @@
 #include "bacs.h"
 #include <Wire.h>
 
+
 void commanderLedsbac(uint8_t numeroDuBac, byte etat)
 {
     numeroDuBac --;
@@ -12,15 +13,40 @@ void commanderLedsbac(uint8_t numeroDuBac, byte etat)
 
 bool etatBoutonValider()
 {
-    if(digitalRead(BOUTON_VALIDER) == APPUYER)
+    static bool etatPrecedent = RELACHE;
+    bool etatActuel = digitalRead(BOUTON_VALIDER);
+
+    if (etatActuel == APPUYER && etatPrecedent == RELACHE)
     {
-        return APPUYER;
+        etatPrecedent = APPUYER;
+        return true; // Le bouton a été pressé
     }
-    else 
+    else if (etatActuel == RELACHE && etatPrecedent == APPUYER)
     {
-        return RELACHE;
+        etatPrecedent = RELACHE;
+        return false; // Le bouton a été relâché
     }
+    return false; // Aucun changement d'état
 }
+
+    bool etatPrecedentBouton()
+    {
+        static bool etatPrecedent = RELACHE;
+        bool etatActuel = digitalRead(BOUTON_VALIDER);
+
+        if (etatActuel == APPUYER && etatPrecedent == RELACHE)
+        {
+            etatPrecedent = APPUYER;
+            return true; // Le bouton a été pressé
+        }
+        else if (etatActuel == RELACHE && etatPrecedent == APPUYER)
+        {
+            etatPrecedent = RELACHE;
+            return false; // Le bouton a été relâché
+        }
+        return false; // Aucun changement d'état
+    }
+
 /*void bacSelectionne(uint8_t numeroDuBac)
 {
     Wire.beginTransmission(ADRESSE_BASE_BACS + numeroDuBac);
