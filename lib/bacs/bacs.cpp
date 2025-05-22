@@ -3,9 +3,8 @@
 #include <Wire.h>
 
 
-void commanderLedsbac(uint8_t numeroDuBac, byte etat)
+void commanderLedsBac(uint8_t numeroDuBac, byte etat)
 {
-    numeroDuBac --;
     Wire.beginTransmission(ADRESSE_BASE_BACS + numeroDuBac);
     Wire.write(etat);
     Wire.endTransmission();
@@ -28,7 +27,6 @@ bool etatBoutonValider()
     }
     return false; // Aucun changement d'état
 }
-
 
 /*void bacSelectionne(uint8_t numeroDuBac)
 {

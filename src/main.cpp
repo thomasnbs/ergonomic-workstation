@@ -2,6 +2,7 @@
 #include <Wire.h>
 #include "transmettre.h"
 #include "bacs.h"
+//#include "affichage.h"
 
 #define NOM_DE_LA_STATION "EWS_4.0"
 
@@ -41,30 +42,18 @@ void setup()
   pinMode(BOUTON_VALIDER, INPUT);
 }
 
-
-// Déclaration de la variable pour stocker l'état précédent du bouton
 bool etatPrecedentEtatBouton = RELACHE;
 
 void loop()
 {
-  String trame = recevoirTrame();
-
-  if (trame != "")
+  recevoirTrame();
+  if(trameValide)
   {
-    Serial.println("Trame reçue : " + trame);
-
-    // Envoi d'un acquittement "A" ou "V"
-    String ack = envoyerTrame("A");  // Ou "V", selon ton protocole
-    envoyerParBluetooth(ack);
-
-    Serial.println("Acquittement envoyé : " + ack);
+    commanderLedsBac == numeroDuBac; 
   }
 
-  delay(100); // Petite pause pour éviter les lectures trop rapides
 
-  // Déclaration en dehors ou en haut de la fonction loop()
-
-    bool etatActuel = etatBoutonValider();
+  bool etatActuel = etatBoutonValider();
 
     if (etatActuel == APPUYER && etatPrecedentEtatBouton == RELACHE)
     {
@@ -76,6 +65,10 @@ void loop()
     etatPrecedentEtatBouton = etatActuel;  //  fonctionne maintenant
     delay(50);
 }
+
+    
+
+
 
 
 

@@ -19,7 +19,7 @@
 #define RELACHE LOW
 
 
-void commanderLedsbac(uint8_t numeroDuBac, byte etat);
+void commanderLedsBac(uint8_t numeroDuBac, byte etat);
 bool etatBoutonValider();  // déclaration correcte
 bool etatPrecedentBouton();
 
