@@ -72,7 +72,7 @@ void decodageTrame(String data) {
           Serial.println("Trame F : Fin de processus");
           break;
         default:
-          Serial.print("Champ inconnu : ");
+          Serial.print("Champ connu : ");
           Serial.println(champ);
       }
     } else {

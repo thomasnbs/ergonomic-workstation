@@ -46,13 +46,25 @@ bool etatPrecedentEtatBouton = RELACHE;
 
 void loop()
 {
-  recevoirTrame();
-  if(trameValide)
+  //lecture des entrées 
+  byte reponseI2C;
+
+  Wire.requestFrom(ADRESSE_BASE_BACS, NOMBRE_D_OCTETS);
+  if(Wire.available())
   {
-    commanderLedsBac == numeroDuBac; 
+    reponseI2C = Wire.read();
+    Serial.println(reponseI2C, BIN);
   }
-
-
+  
+  
+  
+  
+  
+  
+  recevoirTrame();
+  
+  //piloter les leds en fonction de la trame
+  // si le champ du décodage de la trame correspond au numéro du bac, alors allumer la led verte en fonction du numéro du champ. 
   bool etatActuel = etatBoutonValider();
 
     if (etatActuel == APPUYER && etatPrecedentEtatBouton == RELACHE)

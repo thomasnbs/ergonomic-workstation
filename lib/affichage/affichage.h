@@ -5,6 +5,9 @@
 #define AFFICHAGE_H
 
 #include <Arduino.h>
+#include <Adafruit_I2CDevice.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
 // Liaison I2C et afficheur Oled
 
 #define SDA_PIN 21

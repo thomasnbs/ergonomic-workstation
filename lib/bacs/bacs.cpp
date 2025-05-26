@@ -5,9 +5,7 @@
 
 void commanderLedsBac(uint8_t numeroDuBac, byte etat)
 {
-    Wire.beginTransmission(ADRESSE_BASE_BACS + numeroDuBac);
-    Wire.write(etat);
-    Wire.endTransmission();
+    
 }
 
 bool etatBoutonValider()
@@ -28,19 +26,24 @@ bool etatBoutonValider()
     return false; // Aucun changement d'état
 }
 
-/*void bacSelectionne(uint8_t numeroDuBac)
+void bacSelectionne(uint8_t numeroDuBac)
 {
     Wire.beginTransmission(ADRESSE_BASE_BACS + numeroDuBac);
     Wire.write(ALLUMER_LED_VERTE);
     Wire.endTransmission();
 }
-*/
 
-/*void presenceMain(uint8_t octetDuBac, byte capteurValeur)
+
+/* void presenceMain(uint8_t octetDuBac)
 {
-    byte valeur = octetDuBac & CAPTEUR_DE_PRESENCE;
-    Wire.beginTransmission(octetDuBac + CAPTEUR_DE_PRESENCE);
-    Wire.write(capteurValeur);
-    Wire.endTransmission();
-}
+    byte reponseI2C;
+
+    
+    
+    //Serial.print(octetDuBac, BIN);
+    //uint8_t CAPTEUR_DE_PRESENCE = ADRESSE_BASE_BACS.digitalRead();
+}*/
+
+
+/*void buzzer()
 */

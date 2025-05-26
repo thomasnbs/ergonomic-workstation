@@ -22,5 +22,10 @@
 void commanderLedsBac(uint8_t numeroDuBac, byte etat);
 bool etatBoutonValider();  // déclaration correcte
 bool etatPrecedentBouton();
+void decodageBacs();
+//void presenceMain(uint8_t octetDuBac, byte capteurValeur);
+//void buzzer();
+
+
 
 #endif // BACS_H
