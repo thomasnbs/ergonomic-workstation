@@ -83,23 +83,16 @@ void decodageTrame(String data) {
 
 
 
-String envoyerTrame(String trameAenvoyer)
+void envoyerTrame(String trameAenvoyer)
 {
-  return entete + trameAenvoyer + finDeTrame;
+  moduleBluetooth.println(trameAenvoyer);
 }
 
-String fabriquerTrame(bool boutonValider)
+String fabriquerTrame(String champ)
 {
-  if(boutonValider)
-  {
-    return String(valider);
-  }
-  return String(boutonValider); // Convertit booléen en "0" ou "1"
+  
+  String trameFabriquee = entete + champ + finDeTrame;
+  return trameFabriquee;
 }
 
-void envoyerParBluetooth(String message)
-{
-  moduleBluetooth.print(message);
-  Serial.println(message);
-}
 

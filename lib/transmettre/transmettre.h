@@ -13,9 +13,7 @@ void intialiserBluetooth(String nomDuModule, uint16_t vitesse = 9600);
 bool bluetoothConnecte(void);
 void recevoirTrame();
 void decodageTrame(String trame);
-String fabriquerTrame(bool boutonValider);
-String envoyerTrame(String trameAenvoyer);
-void envoyerParBluetooth(String message);
-
+String fabriquerTrame(String);
+void envoyerTrame(String trameAenvoyer);
 
 #endif  //TRANSMETTRE_H
