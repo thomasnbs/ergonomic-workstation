@@ -5,7 +5,9 @@
 
 void commanderLedsBac(uint8_t numeroDuBac, byte etat)
 {
-    
+    Wire.beginTransmission(ADRESSE_BASE_BACS + numeroDuBac);
+    Wire.write(etat);
+    Wire.endTransmission();
 }
 
 bool etatBoutonValider()
@@ -34,14 +36,9 @@ void bacSelectionne(uint8_t numeroDuBac)
 }
 
 
-/* void presenceMain(uint8_t octetDuBac)
+/*void presenceMain(uint8_t octetDuBac)
 {
-    byte reponseI2C;
 
-    
-    
-    //Serial.print(octetDuBac, BIN);
-    //uint8_t CAPTEUR_DE_PRESENCE = ADRESSE_BASE_BACS.digitalRead();
 }*/
 
 

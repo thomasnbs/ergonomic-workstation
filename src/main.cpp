@@ -6,6 +6,7 @@
 
 #define NOM_DE_LA_STATION "EWS_4.0"
 
+
 void setup()
 {
   Serial.begin(VITESSE_SERIE);
@@ -48,18 +49,39 @@ void loop()
 {
   //lecture des entrées 
   byte reponseI2C;
+  byte adresseCapteurs[] = {NUMERO_DU_BAC_1, NUMERO_DU_BAC_2, NUMERO_DU_BAC_3, NUMERO_DU_BAC_4};
+  for (int i = 0; i <8; i++)
+  {
+    Wire.requestFrom(ADRESSE_BASE_BACS + i, NOMBRE_D_OCTETS);
+    if(Wire.available() >0)
+    {
+      reponseI2C = Wire.read();
+      if (!(reponseI2C & MASQUE_DE_PRESENCE_DE_MAIN))
+      {
+        Serial.println("Main présente");
+      }
+      else
+      {
+        //Serial.println("Main absente");
+      }
+      //Serial.println(reponseI2C, BIN);
+    }
+  }
 
   Wire.requestFrom(ADRESSE_BASE_BACS, NOMBRE_D_OCTETS);
-  if(Wire.available())
+  if(Wire.available()>1)
   {
     reponseI2C = Wire.read();
-    Serial.println(reponseI2C, BIN);
+    if (!(reponseI2C & MASQUE_DE_PRESENCE_DE_MAIN))
+    {
+      Serial.println("Main présente");
+    }
+    else
+    {
+      //Serial.println("Main absente");
+    }
+    //Serial.println(reponseI2C, BIN);
   }
-  
-  
-  
-  
-  
   
   recevoirTrame();
   

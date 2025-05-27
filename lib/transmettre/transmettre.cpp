@@ -15,7 +15,6 @@ String buffer = "";
 void intialiserBluetooth(String nomDuModule, uint16_t vitesse)
 {
   moduleBluetooth.begin(nomDuModule);   // Nom du module visible en Bluetooth
-  Serial.println("Bluetooth initialisé");
 }
 
 bool bluetoothConnecte(void)
