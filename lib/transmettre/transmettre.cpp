@@ -100,5 +100,6 @@ String fabriquerTrame(bool boutonValider)
 void envoyerParBluetooth(String message)
 {
   moduleBluetooth.print(message);
+  Serial.println(message);
 }
 

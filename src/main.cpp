@@ -5,12 +5,15 @@
 //#include "affichage.h"
 
 #define NOM_DE_LA_STATION "EWS_4.0"
-
+//#define BLUETOOTH_ACTIF
 
 void setup()
 {
   Serial.begin(VITESSE_SERIE);
   Wire.begin();
+  pinMode(BOUTON_VALIDER, INPUT);
+
+  #ifdef BLUETOOTH_ACTIF
 
   intialiserBluetooth(NOM_DE_LA_STATION);
 
@@ -33,6 +36,14 @@ void setup()
     delay(1000);
   }
 
+#endif
+
+
+  for (uint8_t i = 0; i < NOMBRE_DE_BACS; i++)
+  {
+  commanderLedsBac(i, ALLUMER_LED_VERTE);
+  }
+delay(1000);
   for (uint8_t i = 0; i < NOMBRE_DE_BACS; i++)
   {
     Wire.beginTransmission(ADRESSE_BASE_BACS + i);
@@ -40,9 +51,10 @@ void setup()
     Wire.endTransmission();
   }
 
-  pinMode(BOUTON_VALIDER, INPUT);
-}
 
+  
+}
+//////////////////////////////////////////////////////////////////////
 bool etatPrecedentEtatBouton = RELACHE;
 
 void loop()
@@ -50,15 +62,18 @@ void loop()
   //lecture des entrées 
   byte reponseI2C;
   byte adresseCapteurs[] = {NUMERO_DU_BAC_1, NUMERO_DU_BAC_2, NUMERO_DU_BAC_3, NUMERO_DU_BAC_4};
-  for (int i = 0; i <8; i++)
+  for (int i = 0; i <NOMBRE_DE_BACS; i++)
   {
-    Wire.requestFrom(ADRESSE_BASE_BACS + i, NOMBRE_D_OCTETS);
+    Wire.requestFrom(ADRESSE_BASE_BACS + i, OCTET_DU_BAC);
     if(Wire.available() >0)
     {
       reponseI2C = Wire.read();
+
       if (!(reponseI2C & MASQUE_DE_PRESENCE_DE_MAIN))
       {
-        Serial.println("Main présente");
+        commanderLedsBac(i, ALLUMER_LED_VERTE);
+        delay(1000);
+        commanderLedsBac(i, ETEINDRE_LEDS);
       }
       else
       {
@@ -68,28 +83,13 @@ void loop()
     }
   }
 
-  Wire.requestFrom(ADRESSE_BASE_BACS, NOMBRE_D_OCTETS);
-  if(Wire.available()>1)
-  {
-    reponseI2C = Wire.read();
-    if (!(reponseI2C & MASQUE_DE_PRESENCE_DE_MAIN))
-    {
-      Serial.println("Main présente");
-    }
-    else
-    {
-      //Serial.println("Main absente");
-    }
-    //Serial.println(reponseI2C, BIN);
-  }
-  
   recevoirTrame();
   
   //piloter les leds en fonction de la trame
   // si le champ du décodage de la trame correspond au numéro du bac, alors allumer la led verte en fonction du numéro du champ. 
   bool etatActuel = etatBoutonValider();
 
-    if (etatActuel == APPUYER && etatPrecedentEtatBouton == RELACHE)
+    if ((etatActuel == APPUYER) && (etatPrecedentEtatBouton == RELACHE))
     {
         String trame = envoyerTrame(fabriquerTrame(true));
         envoyerParBluetooth(trame);

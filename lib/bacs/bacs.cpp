@@ -5,6 +5,8 @@
 
 void commanderLedsBac(uint8_t numeroDuBac, byte etat)
 {
+  
+  
     Wire.beginTransmission(ADRESSE_BASE_BACS + numeroDuBac);
     Wire.write(etat);
     Wire.endTransmission();
@@ -36,10 +38,10 @@ void bacSelectionne(uint8_t numeroDuBac)
 }
 
 
-/*void presenceMain(uint8_t octetDuBac)
+void presenceMain(uint8_t octetDuBac)
 {
 
-}*/
+}
 
 
 /*void buzzer()
