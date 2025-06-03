@@ -9,6 +9,7 @@ String entete = "$";
 String finDeTrame = "%";
 String valider = "V";
 String acquittement = "A";
+String priseCorrecte = "C";
 
 String buffer = "";
 
@@ -94,5 +95,6 @@ String fabriquerTrame(String champ)
   String trameFabriquee = entete + champ + finDeTrame;
   return trameFabriquee;
 }
+
 
 
