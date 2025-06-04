@@ -11,6 +11,9 @@
 #define ALLUMER_LED_VERTE 0b11111101
 #define ALLUMER_LED_ROUGE 0b11111110
 #define ETEINDRE_LEDS 0b11111111
+#define BUZZER 0b11101111
+#define BUZZER_ET_LED_ROUGE 0b11101110
+
 #define ROUGE 0
 #define VERTE 0
 
@@ -26,9 +29,10 @@
 void commanderLedsBac(uint8_t numeroDuBac, byte etat);
 bool etatBoutonValider();  // déclaration correcte
 bool etatPrecedentBouton();
-void decodageBacs();
-void presenceMain(uint8_t octetDuBac);
-//void buzzer();
+void bacSelectionne(uint8_t numeroDuBac);
+void signalerUnEcart(uint8_t numeroDuBac, byte etat);
+//void presenceMain(uint8_t octetDuBac);
+
 
 
 

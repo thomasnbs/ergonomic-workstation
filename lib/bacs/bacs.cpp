@@ -35,12 +35,18 @@ void bacSelectionne(uint8_t numeroDuBac)
     Wire.endTransmission();
 }
 
-
-void presenceMain(uint8_t octetDuBac)
+void signalerUnEcart(uint8_t numeroDuBac, byte etat)
 {
-    
+    Wire.beginTransmission(ADRESSE_BASE_BACS + numeroDuBac);
+    Wire.write(etat); // ALLUMER_LED_ROUGE et BUZZER_ET_LED_ROUGE
+    Wire.endTransmission();
+    delay(1000); // Attendre 1 seconde pour que l'utilisateur puisse voir l'écart
+    Wire.beginTransmission(ADRESSE_BASE_BACS + numeroDuBac);
+    Wire.write(ETEINDRE_LEDS); // Éteindre les LEDs après l'écart 
+    Wire.endTransmission();  
 }
 
-
-/*void buzzer()
-*/
+/*void presenceMain(uint8_t octetDuBac)
+{
+    
+}*/

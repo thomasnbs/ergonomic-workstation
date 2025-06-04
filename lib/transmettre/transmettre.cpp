@@ -3,7 +3,7 @@
 #include "BluetoothSerial.h"
 
 BluetoothSerial moduleBluetooth;
-bool trameValide = false;
+
 
 String entete = "$";
 String finDeTrame = "%";
@@ -13,7 +13,8 @@ String priseCorrecte = "C";
 
 String buffer = "";
 
-void intialiserBluetooth(String nomDuModule, uint16_t vitesse)
+
+void initialiserBluetooth(String nomDuModule, uint16_t vitesse)
 {
   moduleBluetooth.begin(nomDuModule);   // Nom du module visible en Bluetooth
 }
@@ -23,35 +24,38 @@ bool bluetoothConnecte(void)
   return moduleBluetooth.hasClient();
 }
 
-void recevoirTrame() {
-  while (moduleBluetooth.available()) {
-    char c = moduleBluetooth.read();
-    buffer += c;
+String recevoirTrame()
+{
+  String trameRecue = "";
 
-    // On traite les trames complètes
-    if (buffer.endsWith("\r\n")) {
-      decodageTrame(buffer);
-      buffer = "";
-    }
+  if (moduleBluetooth.available() > 0)
+  {
+    trameRecue = moduleBluetooth.readStringUntil('\n');
+    trameRecue.trim();
   }
+
+  return trameRecue;
 }
 
-void decodageTrame(String data) {
-
-  Serial.print(data);
+char decodageTrame(String trame) 
+{
+ //data = $X%
+ Serial.println("==> Entrée dans decodageTrame");
   int start = 0;
 
-  while (start < data.length()) {
-    int end = data.indexOf("\r\n", start);
-    if (end == -1) break;
-
-    String trame = data.substring(start, end);
-    start = end + 2; // passer "\r\n"
+  while (start < trame.length()) 
+  {
 
     // Vérification de la structure $X%
-    if (trame.length() == 3 && trame.charAt(0) == '$' && trame.charAt(2) == '%') {
-      char champ = trame.charAt(1);
-
+      trame = trame.substring(entete.length(), trame.length() - finDeTrame.length());
+      Serial.print("Trame decode : ");
+      Serial.println(trame);
+      char champ = trame.charAt(0);
+      Serial.print("Champ : ");
+      Serial.println(champ);
+      if (champ >= '1' && champ <= '6') {
+        return champ; // Retourne le champ du bac sélectionné
+      }
       switch (champ) {
         case 'A':
           Serial.println("Trame A : Acquittement");
@@ -74,15 +78,13 @@ void decodageTrame(String data) {
         default:
           Serial.print("Champ connu : ");
           Serial.println(champ);
+        
+
       }
-    } else {
-      Serial.print("Trame invalide : ");
-      Serial.println(trame);
-    }
+    
   }
+  return '\0'; // Retourne une chaîne vide si aucune trame valide n'est trouvée
 }
-
-
 
 void envoyerTrame(String trameAenvoyer)
 {
@@ -94,6 +96,22 @@ String fabriquerTrame(String champ)
   
   String trameFabriquee = entete + champ + finDeTrame;
   return trameFabriquee;
+}
+
+bool trameValide(String trameRecue)
+{
+  trameRecue.trim(); // Nettoie les \r ou espaces
+
+  if (trameRecue.length() == 3 && trameRecue.charAt(0) == '$' && trameRecue.charAt(2) == '%') 
+  {
+    return true;
+  } 
+  else 
+  {
+    Serial.print("Trame invalide : ");
+    Serial.println(trameRecue);
+    return false;
+  }
 }
 
 

@@ -6,7 +6,9 @@
 
 #define NOM_DE_LA_STATION "EWS_4.0"
 #define BLUETOOTH_ACTIF
+//#define AUCUN 0
 
+char champRecu = '\0';
 
 void setup()
 {
@@ -60,50 +62,52 @@ bool etatPrecedentEtatBouton = RELACHE;
 
 void loop()
 {
-  if(String trameRecue = recevoirTrame())
-  {
-    bacSelectionne(trameRecue.toInt() - 1); // Convertit la trame reçue en entier et sélectionne le bac correspondant
-    
-  }
-  //lecture des entrées 
   byte reponseI2C;
-  for (int i = 0; i <NOMBRE_DE_BACS; i++)
-  {
-    Wire.requestFrom(ADRESSE_BASE_BACS + i, OCTET_DU_BAC);
-    if(Wire.available() >0)
-    {
-      reponseI2C = Wire.read();
-
-      if (!(reponseI2C & MASQUE_DE_PRESENCE_DE_MAIN))
+  String trameRecue = recevoirTrame(); // Recevoir la trame Bluetooth
+// vérifier si la trame reçue est valide et envoyer acquittement 
+if(trameValide(trameRecue))
       {
-        uint8_t bacIdentifie = i + 1; // Le bac est identifié par son numéro (1 à 6)
-        Serial.print("Bac " );
-        Serial.print(bacIdentifie);
-        envoyerTrame(fabriquerTrame(String(bacIdentifie)));
-        commanderLedsBac(i, ALLUMER_LED_VERTE);
-        delay(1000);
-        commanderLedsBac(i, ETEINDRE_LEDS);
-      } 
+        Serial.print("Trame reçue : ");
+        Serial.println(trameRecue); // Afficher la trame reçue
+        envoyerTrame(fabriquerTrame("A")); // Envoie une trame d'acquittement
+        champRecu = decodageTrame(trameRecue); // si la trame est valide, extraire le champ de la trame
+        Serial.print("Champ reçu : ");
+        Serial.println(champRecu); // Afficher le champ reçu
+      }
+      else 
+      {
+        // sinon ne rien faire
+      }
+// traiter les champs
+
+
+   uint8_t bacSelectionne = champRecu - '0'; // Convertit le champ reçu en entier pour identifier le bac sélectionné
+      // allumer la LED verte du bac sélectionné
+    for (int i = 0; i <NOMBRE_DE_BACS; i++)
+    {
+      Wire.requestFrom(ADRESSE_BASE_BACS + i, OCTET_DU_BAC);
+      if(Wire.available() >0)
+      {
+        reponseI2C = Wire.read();
+
+        if (!(reponseI2C & MASQUE_DE_PRESENCE_DE_MAIN))
+        {
+          uint8_t bacIdentifie = i + 1; // Le bac est identifié par son numéro (1 à 6)
+          Serial.print("Bac " );
+          Serial.print(bacIdentifie);
+      // détecter la présence de la main dans le bac sélectionné
+      // comparer le bac sélectionné avec le bac identifié
+      // si le bac identifié est correct, envoyer une trame de prise correcte, clignoter la LED verte du bac sélectionné
+      // sinon, envoyer une trame d'erreur de prise, allumer la LED rouge du bac sélectionné, faire sonner le buzzer du bac sélectionné
+
+    //bacSelectionne(trameRecue.toInt() - 1); // Convertit la trame reçue en entier et sélectionne le bac correspondant
+          envoyerTrame(fabriquerTrame("C"));        
+          commanderLedsBac(i, ALLUMER_LED_VERTE); // Allume la LED verte du bac sélectionné
+        }
+      }
     }
   }
-
-  
-  
-  //piloter les leds en fonction de la trame
-  // si le champ du décodage de la trame correspond au numéro du bac, alors allumer la led verte en fonction du numéro du champ. 
- /* bool etatActuel = etatBoutonValider();
-
-    if ((etatActuel == APPUYER) && (etatPrecedentEtatBouton == RELACHE))
-    {
-      //  String trame = envoyerTrame(fabriquerTrame(true));
-      //  envoyerParBluetooth(trame);
-      //  Serial.println("Trame envoyée : " + trame);
-    }
-
-    etatPrecedentEtatBouton = etatActuel;  //  fonctionne maintenant
-    delay(50);*/
-}
-
+      
 
 
     

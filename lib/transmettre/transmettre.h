@@ -5,16 +5,17 @@
 
 #define VITESSE_BLUETOOTH 9600
 #define VITESSE_SERIE 9600
-#define AUCUN false
+//#define AUCUN false
 #define RECEPTION true
 
 
-void intialiserBluetooth(String nomDuModule, uint16_t vitesse = 9600);
-bool bluetoothConnecte(void);
-void recevoirTrame();
-void decodageTrame(String trame);
-String fabriquerTrame(String);
-void envoyerTrame(String trameAenvoyer);
 
+void initialiserBluetooth(String nomDuModule, uint16_t vitesse = 9600);
+bool bluetoothConnecte(void);
+String recevoirTrame();
+char decodageTrame(String trame);
+String fabriquerTrame(String champ);
+void envoyerTrame(String trameAenvoyer);
+bool trameValide(String trameRecue);
 
 #endif  //TRANSMETTRE_H
